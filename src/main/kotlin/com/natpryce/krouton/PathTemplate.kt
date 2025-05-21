@@ -51,7 +51,7 @@ internal fun encodeUrlTemplatePathElement(it: UrlTemplateElement): CharSequence 
 /**
  * The root of path, <code>/</code>.
  */
-object root : PathTemplate<Unit> {
+object ROOT : PathTemplate<Unit> {
     override fun parsePathElements(pathElements: List<String>) = Pair(Unit, pathElements)
     override fun pathElementsFrom(value: Unit) = emptyList<String>()
     override fun templateElements() = emptyList<UrlTemplateElement>()

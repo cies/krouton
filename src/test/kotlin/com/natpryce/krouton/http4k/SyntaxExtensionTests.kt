@@ -2,9 +2,9 @@ package com.natpryce.krouton.http4k
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
+import com.natpryce.krouton.ROOT
+import com.natpryce.krouton.div
 import com.natpryce.krouton.path
-import com.natpryce.krouton.plus
-import com.natpryce.krouton.unaryPlus
 import dev.minutest.rootContext
 import org.http4k.core.Method.GET
 import org.http4k.core.Request
@@ -16,9 +16,9 @@ import java.time.LocalTime
 
 @Testable
 fun `extending the Krouton syntax`() = rootContext {
-    val internalRoot = +"internal"
-    val status = internalRoot + "status"
-    val config = internalRoot + "config"
+    val internalRoot = ROOT / "internal"
+    val status = internalRoot / "status"
+    val config = internalRoot / "config"
     
     fun ResourceRoutesBuilder.canBeMonitored() {
         status methods {
@@ -34,7 +34,7 @@ fun `extending the Krouton syntax`() = rootContext {
         }
     }
     
-    val myApp = +"myapp"
+    val myApp = ROOT / "myapp"
     
     val app = resources {
         myApp methods {

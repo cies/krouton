@@ -8,8 +8,8 @@ import com.natpryce.krouton.PathTemplate2
 import com.natpryce.krouton.int
 import com.natpryce.krouton.monitoredPath
 import com.natpryce.krouton.path
-import com.natpryce.krouton.plus
-import com.natpryce.krouton.root
+import com.natpryce.krouton.ROOT
+import com.natpryce.krouton.div
 import com.natpryce.krouton.string
 import dev.minutest.rootContext
 import org.http4k.core.Filter
@@ -25,7 +25,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.platform.commons.annotation.Testable
 
 private val examplePath: PathTemplate2<String, Int> =
-    root + "example" + string.named("name").monitored() + int.named("x")
+    ROOT / "example" / string.named("name").monitored() / int.named("x")
 
 
 private val app = resources {

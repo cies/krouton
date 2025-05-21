@@ -3,11 +3,11 @@ package com.natpryce.krouton.example
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import com.natpryce.krouton.PathTemplate2
+import com.natpryce.krouton.ROOT
+import com.natpryce.krouton.div
 import com.natpryce.krouton.double
 import com.natpryce.krouton.http4k.resources
 import com.natpryce.krouton.path
-import com.natpryce.krouton.plus
-import com.natpryce.krouton.unaryPlus
 import dev.minutest.rootContext
 import org.http4k.core.HttpHandler
 import org.http4k.core.Method.GET
@@ -17,15 +17,15 @@ import org.http4k.core.Status.Companion.OK
 import org.junit.platform.commons.annotation.Testable
 
 
-val operands: PathTemplate2<Double, Double> = double + double
+val operands: PathTemplate2<Double, Double> = double / double
 
-val add: PathTemplate2<Double, Double> = +"add" + operands
-val sub: PathTemplate2<Double, Double> = +"sub" + operands
-val mul: PathTemplate2<Double, Double> = +"mul" + operands
-val div: PathTemplate2<Double, Double> = +"div" + operands
-val max: PathTemplate2<Double, Double> = +"max" + operands
-val min: PathTemplate2<Double, Double> = +"min" + operands
-val avg: PathTemplate2<Double, Double> = +"avg" + operands
+val add: PathTemplate2<Double, Double> = ROOT / "add" / operands
+val sub: PathTemplate2<Double, Double> = ROOT / "sub" / operands
+val mul: PathTemplate2<Double, Double> = ROOT / "mul" / operands
+val div: PathTemplate2<Double, Double> = ROOT / "div" / operands
+val max: PathTemplate2<Double, Double> = ROOT / "max" / operands
+val min: PathTemplate2<Double, Double> = ROOT / "min" / operands
+val avg: PathTemplate2<Double, Double> = ROOT / "avg" / operands
 
 val calculatorService = resources {
     add methods {
@@ -50,7 +50,7 @@ val calculatorService = resources {
         GET { _, (x, y) -> ok((x + y) / 2.0) }
     }
     // reverse routing: turn a path template into a link
-    +"average" + operands methods {
+    ROOT / "average" / operands methods {
         GET { _, (x, y) -> Response(MOVED_PERMANENTLY).header("Location", avg.path(x, y)) }
     }
 }

@@ -5,10 +5,9 @@ import com.natpryce.hamkrest.equalTo
 import com.natpryce.krouton.double
 import com.natpryce.krouton.int
 import com.natpryce.krouton.path
-import com.natpryce.krouton.plus
-import com.natpryce.krouton.root
+import com.natpryce.krouton.ROOT
+import com.natpryce.krouton.div
 import com.natpryce.krouton.string
-import com.natpryce.krouton.unaryPlus
 import dev.minutest.rootContext
 import org.http4k.core.Method.GET
 import org.http4k.core.Method.POST
@@ -21,10 +20,10 @@ import org.http4k.core.Status.Companion.OK
 import org.junit.platform.commons.annotation.Testable
 
 
-private val incrementInt = +"inc" + int.named("i")
-private val incrementDouble = +"inc" + double.named("d")
-private val a = +"a"
-private val b = +"b"
+private val incrementInt = ROOT / "inc" / int.named("i")
+private val incrementDouble = ROOT / "inc" / double.named("d")
+private val a = ROOT / "a"
+private val b = ROOT / "b"
 
 @Testable
 fun `routing HTTP4K requests via Krouton routes`() = rootContext {
@@ -82,7 +81,7 @@ fun `routing HTTP4K requests via Krouton routes`() = rootContext {
     }
     
     test("routing by method`") {
-        val tester = root + "test" + string.named("s")
+        val tester = ROOT / "test" / string.named("s")
         
         val router = resources {
             tester methods {
@@ -100,7 +99,7 @@ fun `routing HTTP4K requests via Krouton routes`() = rootContext {
         val router = resources {
             incrementInt { _, _ -> Response(OK) }
             incrementDouble { _, _ -> Response(OK) }
-            (+"another") { _, _ -> Response(OK) }
+            (ROOT / "another") { _, _ -> Response(OK) }
         }
         
         assertThat(router.urlTemplates(), equalTo(listOf(

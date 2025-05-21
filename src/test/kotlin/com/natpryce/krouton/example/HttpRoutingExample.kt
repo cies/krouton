@@ -14,8 +14,8 @@ import com.natpryce.krouton.http4k.resources
 import com.natpryce.krouton.int
 import com.natpryce.krouton.locale
 import com.natpryce.krouton.path
-import com.natpryce.krouton.plus
-import com.natpryce.krouton.root
+import com.natpryce.krouton.ROOT
+import com.natpryce.krouton.div
 import com.natpryce.krouton.string
 import com.natpryce.krouton.tuple
 import dev.minutest.rootContext
@@ -55,24 +55,24 @@ object LocalDate_ : Projection<Tuple3<Int, Int, Int>, LocalDate> {
 val year by int
 val month by int
 val day by int
-val date = year + month + day asA LocalDate_
+val date = year / month / day asA LocalDate_
 
 // The application's routes
-val reverse = root + "reverse" + string
-val negate = root + "negate" + int
+val reverse = ROOT / "reverse" / string
+val negate = ROOT / "negate" / int
 
 // Note: without these explicit type declarations, the Kotlin compiler crashes with an internal error
-val weekday: PathTemplate2<Locale, LocalDate> = root + "weekday" + locale.named("locale") + date
-val weekdayToday: PathTemplate<Locale> = root + "weekday" + locale.named("locale") + "today"
+val weekday: PathTemplate2<Locale, LocalDate> = ROOT / "weekday" / locale.named("locale") / date
+val weekdayToday: PathTemplate<Locale> = ROOT / "weekday" / locale.named("locale") / "today"
 
 // Obsolete routes that each redirect to one of the routes above
-val negative = root + "negative" + int
-val reversed = root + "reversed" + string
+val negative = ROOT / "negative" / int
+val reversed = ROOT / "reversed" / string
 
 
 // The server that uses the routes
 val demo = resources {
-    root methods {
+    ROOT methods {
         GET { ok("Hello, World.") }
     }
     

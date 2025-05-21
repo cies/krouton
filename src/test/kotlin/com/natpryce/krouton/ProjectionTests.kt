@@ -50,7 +50,7 @@ internal data class Score(val name: String, val score: Int) {
     }
 }
 
-private val scores = string + int asA Score
+private val scores = string / int asA Score
 
 private data class TimestampedScore(val timestamp: Date, val score: Score) {
     companion object : Projection<Tuple2<Date, Score>, TimestampedScore> {
@@ -59,5 +59,5 @@ private data class TimestampedScore(val timestamp: Date, val score: Score) {
     }
 }
 
-private val timestampedScores = (root + "at" + timestamp + "score" + scores) asA TimestampedScore
+private val timestampedScores = (ROOT / "at" / timestamp / "score" / scores) asA TimestampedScore
 

@@ -2,7 +2,8 @@ package com.natpryce.krouton.http4k
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
-import com.natpryce.krouton.unaryPlus
+import com.natpryce.krouton.ROOT
+import com.natpryce.krouton.div
 import dev.minutest.rootContext
 import org.http4k.core.Method.GET
 import org.http4k.core.Response
@@ -11,14 +12,14 @@ import org.junit.platform.commons.annotation.Testable
 
 @Testable
 fun `composition of routers`() = rootContext {
-    val routeX = +"x"
+    val routeX = ROOT / "x"
     val appX = resources {
         routeX methods {
             GET { Response(OK).body("x") }
         }
     }
     
-    val routeY = +"y"
+    val routeY = ROOT / "y"
     val appY = resources {
         routeY methods {
             GET { Response(OK).body("y") }

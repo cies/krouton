@@ -8,7 +8,7 @@ import java.net.URI
 
 @Testable
 fun `extend URI path with template and parameters`() = rootContext {
-    val alice = root + "alice"
+    val alice = ROOT / "alice"
     
     test("no parameters") {
         assertThat(URI("http://example.com").extend(alice), equalTo(URI("http://example.com/alice")))
@@ -18,7 +18,7 @@ fun `extend URI path with template and parameters`() = rootContext {
         assertThat(URI("http://example.com/bob/").extend(alice), equalTo(URI("http://example.com/bob/alice")))
     }
     
-    val aliceX = alice + string.named("x")
+    val aliceX = alice / string.named("x")
     
     test("parameterised") {
         assertThat(URI("http://example.com/dave").extend(aliceX, "carol"),

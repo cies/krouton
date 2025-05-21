@@ -19,16 +19,16 @@ fun `reporting the monitored path`() = rootContext {
     }
     
     test("monitored path reporting with composition") {
-        assertThat((string.named("planet") + double.named("lat") + double.named("lon")).monitoredPath("mars", 20.0, 50.5),
+        assertThat((string.named("planet") / double.named("lat") / double.named("lon")).monitoredPath("mars", 20.0, 50.5),
             equalTo("/{planet}/{lat}/{lon}"))
         
-        assertThat((string.named("planet").monitored() + double.named("lat") + double.named("lon")).monitoredPath("earth", 19.3, 33.5),
+        assertThat((string.named("planet").monitored() / double.named("lat") / double.named("lon")).monitoredPath("earth", 19.3, 33.5),
             equalTo("/earth/{lat}/{lon}"))
     }
     
     test("monitored path reporting with composition with Empty") {
-        assertThat((root + string.named("planet")).monitoredPath("earth"), equalTo("/{planet}"))
-        assertThat((root + "planet" + string.named("planet") + "orbit").monitoredPath("mercury"), equalTo("/planet/{planet}/orbit"))
+        assertThat((ROOT / string.named("planet")).monitoredPath("earth"), equalTo("/{planet}"))
+        assertThat((ROOT / "planet" / string.named("planet") / "orbit").monitoredPath("mercury"), equalTo("/planet/{planet}/orbit"))
     }
     
     test("monitored path reporting with restriction") {
@@ -38,7 +38,7 @@ fun `reporting the monitored path`() = rootContext {
     }
     
     test("monitored path with projection") {
-        val planetaryPosition = string.named("planet").monitored() + (double.named("lat") + double.named("lon") asA position)
+        val planetaryPosition = string.named("planet").monitored() / (double.named("lat") / double.named("lon") asA position)
         
         assertThat(planetaryPosition.monitoredPath("venus", Position(35.2, 16.4)), equalTo("/venus/{lat}/{lon}"))
     }
