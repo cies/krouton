@@ -1,6 +1,8 @@
 package com.natpryce.krouton
 
 import kotlin.reflect.KProperty
+import org.http4k.appendIfNotBlank
+import org.http4k.core.Request
 
 
 interface PathTemplate<T> {
@@ -27,6 +29,18 @@ fun <T> PathTemplate<T>.parse(splitPath: List<String>): T? =
 
 fun <T> PathTemplate<T>.path(value: T): String =
   joinPath(pathElementsFrom(value), ::encodePathElement)
+
+fun <T> PathTemplate<T>.fullUrl(request: Request, value: T): String {
+  val baseUrl = buildString {
+    // Code copied from http4k's `Uri.toString()`
+    appendIfNotBlank(request.uri.scheme, request.uri.scheme, ":")
+    appendIfNotBlank(request.uri.authority, "//", request.uri.authority)
+  }
+  return this.fullUrl(baseUrl, value)
+}
+
+fun <T> PathTemplate<T>.fullUrl(baseUrl: String, value: T): String =
+  baseUrl + joinPath(pathElementsFrom(value), ::encodePathElement)
 
 fun <T> PathTemplate<T>.monitoredPath(value: T): String =
   joinPath(monitoredTemplateElementsFrom(value), ::encodeUrlTemplatePathElement)

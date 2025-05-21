@@ -11,6 +11,7 @@ import com.natpryce.krouton.ROOT
 import com.natpryce.krouton.Tuple3
 import com.natpryce.krouton.asA
 import com.natpryce.krouton.div
+import com.natpryce.krouton.fullUrl
 import com.natpryce.krouton.getValue
 import com.natpryce.krouton.http4k.resources
 import com.natpryce.krouton.int
@@ -98,8 +99,8 @@ val demo = resources {
   }
 
   weekdayToday methods {
-    /* Note - reverse routing using user-defined projection*/
-    GET { _, locale -> redirect(FOUND, weekday.path(locale, now())) }
+    // NOTE: reverse routing using user-defined projection.
+    GET { req, locale -> redirect(FOUND, weekday.fullUrl("https://test.com", locale, now())) }
   }
 }
 

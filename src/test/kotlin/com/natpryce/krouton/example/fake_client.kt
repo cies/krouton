@@ -16,12 +16,10 @@ internal fun HttpHandler.responseBodyOfGetRequestTo(path: String): String {
 }
 
 internal fun HttpHandler.responseOfGetRequestTo(path: String): Response {
-  Request(GET, path)
   val response = this(Request(GET, path))
   return when {
-    response.status.redirection -> this@responseOfGetRequestTo.responseOfGetRequestTo(
-      response.header("location") ?: fail("no redirect location")
-    )
+    response.status.redirection -> this@responseOfGetRequestTo
+      .responseOfGetRequestTo(response.header("location") ?: fail("no redirect location"))
 
     else -> response
   }
