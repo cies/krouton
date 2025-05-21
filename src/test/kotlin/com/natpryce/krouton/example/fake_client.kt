@@ -7,19 +7,19 @@ import org.http4k.core.Response
 import kotlin.test.fail
 
 
-internal fun HttpHandler.getText(path: String): String {
-    val response = this.get(path)
+internal fun HttpHandler.responseBodyOfGetRequestTo(path: String): String {
+    val response = this.responseOfGetRequestTo(path)
     return when {
         response.status.successful -> response.bodyString()
         else -> fail("request failed, status: ${response.status}")
     }
 }
 
-internal fun HttpHandler.get(path: String): Response {
+internal fun HttpHandler.responseOfGetRequestTo(path: String): Response {
     Request(GET, path)
     val response = this(Request(GET, path))
     return when {
-        response.status.redirection -> this@get.get(response.header("location") ?: fail("no redirect location"))
+        response.status.redirection -> this@responseOfGetRequestTo.responseOfGetRequestTo(response.header("location") ?: fail("no redirect location"))
         else -> response
     }
 }

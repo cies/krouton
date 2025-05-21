@@ -62,11 +62,11 @@ fun `CalculatorService tests`() = rootContext<HttpHandler> {
     fixture { calculatorService }
     
     test("adding") {
-        assertThat(getText("/add/1/2"), equalTo("3.0"))
+        assertThat(responseBodyOfGetRequestTo("/add/1/2"), equalTo("3.0"))
     }
     
     test("subtracting") {
-        assertThat(getText("/sub/2.25/0.5"), equalTo("1.75"))
+        assertThat(responseBodyOfGetRequestTo("/sub/2.25/0.5"), equalTo("1.75"))
     }
 }
 
