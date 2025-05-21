@@ -19,8 +19,8 @@ import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.core.Status
 import org.http4k.core.UriTemplate
-import org.http4k.routing.RoutedRequest
-import org.http4k.routing.RoutedResponse
+import org.http4k.routing.RequestWithContext
+import org.http4k.routing.ResponseWithContext
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.platform.commons.annotation.Testable
 
@@ -32,7 +32,7 @@ private val app = resources {
     examplePath { rq, parsedElements ->
         val expectedTemplate = UriTemplate.from(examplePath.monitoredPath(parsedElements))
         
-        assertThat(rq, cast(has(RoutedRequest::xUriTemplate, equalTo(expectedTemplate))))
+        assertThat(rq, cast(has(RequestWithContext::xUriTemplate, equalTo(expectedTemplate))))
         
         Response(Status.OK)
     }
@@ -43,7 +43,7 @@ fun `monitored routing`() = rootContext {
     test("reports matched path template to app and caller`") {
         val response = app(Request(GET, examplePath.path("alice", 10)))
         
-        assertThat(response, cast(has(RoutedResponse::xUriTemplate, equalTo(
+        assertThat(response, cast(has(ResponseWithContext::xUriTemplate, equalTo(
             UriTemplate.from("/example/alice/{x}")))))
     }
     
@@ -66,7 +66,7 @@ fun `monitored routing`() = rootContext {
         
         assertTrue(filter.wasApplied, "filter should have been applied")
         
-        assertThat(response, cast(has(RoutedResponse::xUriTemplate, equalTo(
+        assertThat(response, cast(has(ResponseWithContext::xUriTemplate, equalTo(
             UriTemplate.from("/example/alice/{x}")))))
     }
     
@@ -81,7 +81,7 @@ fun `monitored routing`() = rootContext {
         assertTrue(filter1.wasApplied, "filter 1 should have been applied")
         assertTrue(filter2.wasApplied, "filter 2 should have been applied")
         
-        assertThat(response, cast(has(RoutedResponse::xUriTemplate, equalTo(
+        assertThat(response, cast(has(ResponseWithContext::xUriTemplate, equalTo(
             UriTemplate.from("/example/alice/{x}")))))
     }
 }

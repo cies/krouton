@@ -13,8 +13,8 @@ import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.core.UriTemplate
 import org.http4k.core.then
-import org.http4k.routing.RoutedRequest
-import org.http4k.routing.RoutedResponse
+import org.http4k.routing.RequestWithContext
+import org.http4k.routing.ResponseWithContext
 
 /**
  * A route might map a request and some data parsed from that request to a response.
@@ -91,7 +91,7 @@ data class PathParsingRoute<T>(
         pathTemplate.parse(path)?.let { parsed ->
             val filteredHandler = filter { request -> handler(request, parsed) }
             val template = UriTemplate.from(pathTemplate.monitoredPath(parsed))
-            RoutedResponse(filteredHandler(RoutedRequest(request, template)), template)
+            ResponseWithContext(filteredHandler(RequestWithContext(request, template)), template)
         }
     
     override fun urlTemplates() = listOf(pathTemplate.toUrlTemplate())
