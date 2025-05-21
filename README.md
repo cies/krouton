@@ -1,6 +1,5 @@
 # Krouton
 
-
 Typesafe, compositional routing and reverse routing for [Kotlin](https://kotlinlang.org) web apps and HTTP microservices.
 
 [![Kotlin](https://img.shields.io/badge/kotlin-1.2.51-blue.svg)](http://kotlinlang.org)
@@ -10,9 +9,11 @@ Typesafe, compositional routing and reverse routing for [Kotlin](https://kotlinl
 
 Krouton provides a routing API for [HTTP4K](https://http4k.org), but the core abstractions can be used with any web server library.
 
+
 ## Examples
 
- * [Routing and reverse routing with HTTP4K](src/test/kotlin/com/natpryce/krouton/example/HttpRoutingExample.kt)
+* [Routing and reverse routing with HTTP4K](src/test/kotlin/com/natpryce/krouton/example/HttpRoutingExample.kt)
+
 
 ## Principles
 
@@ -21,7 +22,7 @@ Type safe routing and reverse routing.
 No reflection, annotations or classpath scanning.
 
 Explicit, type-checked flow of data and control, instead of "spooky action at a distance" via reflection, annotations,
-classpath scanning, passing data in context maps or synthetic HTTP headers, or control flow via exceptions.  
+classpath scanning, passing data in context maps or synthetic HTTP headers, or control flow via exceptions.
 
 Separate code that routes and handles requests from definitions of URLs
 
@@ -29,7 +30,7 @@ Separate code that routes and handles requests from definitions of URLs
 * Routing policy defined by operations on those constants
 * Routing done by functions/closures/objects that connect Krouton's routing policy API to a web server library.
 
-Compositional: routes are composed from primitive parts and composition operators. User-defined routes can be used in 
+Compositional: routes are composed from primitive parts and composition operators. User-defined routes can be used in
 exactly the same way as the predefined primitives.
 
 Mandatory aspects of a resource locator go in the path
@@ -43,9 +44,10 @@ Query parameters are optional and are interpreted by the resource.
 * Reverse Routing: `UrlScheme<T>.path(T) -> String`
 * Reporting: `UrlScheme<T>.monitoredPath(T)-> String`
 
+
 ## Route composition
 
-* Append: 
+* Append:
     * `UrlScheme<T> + UrlScheme<U> -> UrlScheme<Tuple2<T,U>>`
     * `+` operator supports appending paths for scalars and tuples, forming paths for tuples with up to five elements
     * `UrlScheme<Unit> + UrlScheme<T> -> UrlScheme<T>`
@@ -57,8 +59,8 @@ Query parameters are optional and are interpreted by the resource.
 
 ## What's with the version number?
 
-The version number is {mental}.{major}.{minor}.{patch}.  The last three digits are treated as a
-[semantic version number](https://semver.org).  The first digit is incremented if there is a significant 
-change in the mental model underpinning the library.   A major version of zero always signifies a pre-release version,
-irrespective of the value of the first digit.  The API of pre-release versions may go through significant changes in 
+The version number is {mental}.{major}.{minor}.{patch}. The last three digits are treated as a
+[semantic version number](https://semver.org). The first digit is incremented if there is a significant
+change in the mental model underpinning the library. A major version of zero always signifies a pre-release version,
+irrespective of the value of the first digit. The API of pre-release versions may go through significant changes in
 response to user feedback before the release of version x.1.0.0.

@@ -2,11 +2,11 @@ package com.natpryce.krouton.http4k
 
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
+import com.natpryce.krouton.ROOT
+import com.natpryce.krouton.div
 import com.natpryce.krouton.double
 import com.natpryce.krouton.int
 import com.natpryce.krouton.path
-import com.natpryce.krouton.ROOT
-import com.natpryce.krouton.div
 import com.natpryce.krouton.string
 import dev.minutest.rootContext
 import org.http4k.core.Method.GET
@@ -27,85 +27,89 @@ private val b = ROOT / "b"
 
 @Testable
 fun `routing HTTP4K requests via Krouton routes`() = rootContext {
-    test("routes by path`") {
-        val router = resources {
-            incrementInt { _, n ->
-                Response(OK).body((n + 1).toString())
-            }
-        }
-        
-        val request = Request(GET, "/inc/10")
-        val response = router(request)
-        
-        assertThat(response.status, equalTo(OK))
-        assertThat(response.bodyString(), equalTo("11"))
+  test("routes by path`") {
+    val router = resources {
+      incrementInt { _, n ->
+        Response(OK).body((n + 1).toString())
+      }
     }
-    
-    test("overlapping routes`") {
-        val router = resources {
-            incrementInt { _, n ->
-                Response(OK).body((n + 1).toString())
-            }
-            incrementDouble { _, d ->
-                Response(OK).body((d + 1.0).toString())
-            }
-        }
-        
-        assertThat(router(Request(GET, "/inc/10.0")).bodyString(), equalTo("11.0"))
+
+    val request = Request(GET, "/inc/10")
+    val response = router(request)
+
+    assertThat(response.status, equalTo(OK))
+    assertThat(response.bodyString(), equalTo("11"))
+  }
+
+  test("overlapping routes`") {
+    val router = resources {
+      incrementInt { _, n ->
+        Response(OK).body((n + 1).toString())
+      }
+      incrementDouble { _, d ->
+        Response(OK).body((d + 1.0).toString())
+      }
     }
-    
-    test("route with no parsed path elements`") {
-        val router = resources {
-            a { Response(OK).body("a") }
-            b methods {
-                GET { Response(OK).body("b") }
-            }
-        }
-        
-        
-        assertThat(router(Request(GET, "/a")).bodyString(), equalTo("a"))
-        assertThat(router(Request(GET, "/b")).bodyString(), equalTo("b"))
+
+    assertThat(router(Request(GET, "/inc/10.0")).bodyString(), equalTo("11.0"))
+  }
+
+  test("route with no parsed path elements`") {
+    val router = resources {
+      a { Response(OK).body("a") }
+      b methods {
+        GET { Response(OK).body("b") }
+      }
     }
-    
-    
-    test("returns 404 Not Found for unrecognised URI`") {
-        val router = resources {
-            incrementInt { _, n ->
-                Response(OK).body((n + 1).toString())
-            }
-        }
-        
-        assertThat(router(Request(GET, "/blah-blah-blah")).status, equalTo(NOT_FOUND))
-        assertThat(router(Request(GET, "/inc/not-a-number")).status, equalTo(NOT_FOUND))
-        assertThat(router(Request(GET, "/inc/10.0")).status, equalTo(NOT_FOUND))
+
+
+    assertThat(router(Request(GET, "/a")).bodyString(), equalTo("a"))
+    assertThat(router(Request(GET, "/b")).bodyString(), equalTo("b"))
+  }
+
+
+  test("returns 404 Not Found for unrecognised URI`") {
+    val router = resources {
+      incrementInt { _, n ->
+        Response(OK).body((n + 1).toString())
+      }
     }
-    
-    test("routing by method`") {
-        val tester = ROOT / "test" / string.named("s")
-        
-        val router = resources {
-            tester methods {
-                GET { _, s -> Response(OK).body("got $s") }
-                POST { _, s -> Response(OK).body("posted $s") }
-            }
-        }
-        
-        assertThat(router(Request(GET, tester.path("x"))), equalTo(Response(OK).body("got x")))
-        assertThat(router(Request(POST, tester.path("y"))), equalTo(Response(OK).body("posted y")))
-        assertThat(router(Request(PUT, tester.path("x"))).status, equalTo(METHOD_NOT_ALLOWED))
+
+    assertThat(router(Request(GET, "/blah-blah-blah")).status, equalTo(NOT_FOUND))
+    assertThat(router(Request(GET, "/inc/not-a-number")).status, equalTo(NOT_FOUND))
+    assertThat(router(Request(GET, "/inc/10.0")).status, equalTo(NOT_FOUND))
+  }
+
+  test("routing by method`") {
+    val tester = ROOT / "test" / string.named("s")
+
+    val router = resources {
+      tester methods {
+        GET { _, s -> Response(OK).body("got $s") }
+        POST { _, s -> Response(OK).body("posted $s") }
+      }
     }
-    
-    test("reports routes as url templates`") {
-        val router = resources {
-            incrementInt { _, _ -> Response(OK) }
-            incrementDouble { _, _ -> Response(OK) }
-            (ROOT / "another") { _, _ -> Response(OK) }
-        }
-        
-        assertThat(router.urlTemplates(), equalTo(listOf(
-            "/inc/{i}",
-            "/inc/{d}",
-            "/another"
-        )))
+
+    assertThat(router(Request(GET, tester.path("x"))), equalTo(Response(OK).body("got x")))
+    assertThat(router(Request(POST, tester.path("y"))), equalTo(Response(OK).body("posted y")))
+    assertThat(router(Request(PUT, tester.path("x"))).status, equalTo(METHOD_NOT_ALLOWED))
+  }
+
+  test("reports routes as url templates`") {
+    val router = resources {
+      incrementInt { _, _ -> Response(OK) }
+      incrementDouble { _, _ -> Response(OK) }
+      (ROOT / "another") { _, _ -> Response(OK) }
     }
+
+    assertThat(
+      router.urlTemplates(), equalTo(
+        listOf(
+          "/inc/{i}",
+          "/inc/{d}",
+          "/another"
+        )
+      )
+    )
+  }
 }

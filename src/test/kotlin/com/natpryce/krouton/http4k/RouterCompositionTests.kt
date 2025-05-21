@@ -12,34 +12,34 @@ import org.junit.platform.commons.annotation.Testable
 
 @Testable
 fun `composition of routers`() = rootContext {
-    val routeX = ROOT / "x"
-    val appX = resources {
-        routeX methods {
-            GET { Response(OK).body("x") }
-        }
+  val routeX = ROOT / "x"
+  val appX = resources {
+    routeX methods {
+      GET { Response(OK).body("x") }
     }
-    
-    val routeY = ROOT / "y"
-    val appY = resources {
-        routeY methods {
-            GET { Response(OK).body("y") }
-        }
+  }
+
+  val routeY = ROOT / "y"
+  val appY = resources {
+    routeY methods {
+      GET { Response(OK).body("y") }
     }
-    
-    val composedApp = appX + appY
-    
-    val monolithicApp = resources {
-        routeX methods {
-            GET { Response(OK).body("x") }
-        }
-        
-        routeY methods {
-            GET { Response(OK).body("y") }
-        }
+  }
+
+  val composedApp = appX + appY
+
+  val monolithicApp = resources {
+    routeX methods {
+      GET { Response(OK).body("x") }
     }
-    
-    test("you can add Krouton apps together") {
-        assertThat(composedApp.urlTemplates(), equalTo(monolithicApp.urlTemplates()))
-        assertThat(composedApp.router.handlerIfNoMatch, equalTo(appY.router.handlerIfNoMatch))
+
+    routeY methods {
+      GET { Response(OK).body("y") }
     }
+  }
+
+  test("you can add Krouton apps together") {
+    assertThat(composedApp.urlTemplates(), equalTo(monolithicApp.urlTemplates()))
+    assertThat(composedApp.router.handlerIfNoMatch, equalTo(appY.router.handlerIfNoMatch))
+  }
 }

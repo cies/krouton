@@ -8,9 +8,9 @@ import org.junit.platform.commons.annotation.Testable
 
 @Testable
 fun `converting krouton routes to url template syntax`() = rootContext {
-    val nameAndScorePath = ROOT  / "player" / string.named("p").monitored() / "score" / int.named("s")
-    val scorePath = nameAndScorePath asA Score
-    
-    assertThat(nameAndScorePath.toUrlTemplate(), equalTo("/player/{p}/score/{s}"))
-    assertThat(scorePath.toUrlTemplate(), equalTo("/player/{p}/score/{s}"))
+  val nameAndScorePath = ROOT / "player" / string.named("p").monitored() / "score" / int.named("s")
+  val scorePath = nameAndScorePath asA Score
+
+  assertThat(nameAndScorePath.toUrlTemplate(), equalTo("/player/{p}/score/{s}"))
+  assertThat(scorePath.toUrlTemplate(), equalTo("/player/{p}/score/{s}"))
 }

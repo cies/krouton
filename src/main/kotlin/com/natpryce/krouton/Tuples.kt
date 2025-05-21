@@ -5,10 +5,10 @@ data class Tuple3<T1, T2, T3>(val val1: T1, val val2: T2, val val3: T3)
 data class Tuple4<T1, T2, T3, T4>(val val1: T1, val val2: T2, val val3: T3, val val4: T4)
 data class Tuple5<T1, T2, T3, T4, T5>(val val1: T1, val val2: T2, val val3: T3, val val4: T4, val val5: T5)
 
-fun <T1,T2> tuple(val1: T1, val2: T2) = Tuple2(val1, val2)
-fun <T1,T2, T3> tuple(val1: T1, val2: T2, val3: T3) = Tuple3(val1, val2, val3)
-fun <T1,T2, T3, T4> tuple(val1: T1, val2: T2, val3: T3, val4: T4) = Tuple4(val1, val2, val3, val4)
-fun <T1,T2, T3, T4, T5> tuple(val1: T1, val2: T2, val3: T3, val4: T4, val5: T5) = Tuple5(val1, val2, val3, val4, val5)
+fun <T1, T2> tuple(val1: T1, val2: T2) = Tuple2(val1, val2)
+fun <T1, T2, T3> tuple(val1: T1, val2: T2, val3: T3) = Tuple3(val1, val2, val3)
+fun <T1, T2, T3, T4> tuple(val1: T1, val2: T2, val3: T3, val4: T4) = Tuple4(val1, val2, val3, val4)
+fun <T1, T2, T3, T4, T5> tuple(val1: T1, val2: T2, val3: T3, val4: T4, val5: T5) = Tuple5(val1, val2, val3, val4, val5)
 
 fun <T1, T2> tupleFlat(val1: T1, val2: T2) = Tuple2(val1, val2)
 fun <T1, T2, T3> tupleFlat(val2: T1, t: Tuple2<T2, T3>) = Tuple3(val2, t.val1, t.val2)
@@ -17,9 +17,12 @@ fun <T1, T2, T3, T4, T5> tupleFlat(val4: T1, t: Tuple4<T2, T3, T4, T5>) = Tuple5
 
 fun <T1, T2, T3> tupleFlat(t1: Tuple2<T1, T2>, val3: T3) = Tuple3(t1.val1, t1.val2, val3)
 fun <T1, T2, T3, T4> tupleFlat(t1: Tuple2<T1, T2>, t2: Tuple2<T3, T4>) = Tuple4(t1.val1, t1.val2, t2.val1, t2.val2)
-fun <T1, T2, T3, T4, T5> tupleFlat(t1: Tuple2<T1, T2>, t2: Tuple3<T3, T4, T5>) = Tuple5(t1.val1, t1.val2, t2.val1, t2.val2, t2.val3)
+fun <T1, T2, T3, T4, T5> tupleFlat(t1: Tuple2<T1, T2>, t2: Tuple3<T3, T4, T5>) =
+  Tuple5(t1.val1, t1.val2, t2.val1, t2.val2, t2.val3)
 
 fun <T1, T2, T3, T4> tupleFlat(t1: Tuple3<T1, T2, T3>, val4: T4) = Tuple4(t1.val1, t1.val2, t1.val3, val4)
-fun <T1, T2, T3, T4, T5> tupleFlat(t1: Tuple3<T1, T2, T3>, t2: Tuple2<T4, T5>) = Tuple5(t1.val1, t1.val2, t1.val3, t2.val1, t2.val2)
+fun <T1, T2, T3, T4, T5> tupleFlat(t1: Tuple3<T1, T2, T3>, t2: Tuple2<T4, T5>) =
+  Tuple5(t1.val1, t1.val2, t1.val3, t2.val1, t2.val2)
 
-fun <T1, T2, T3, T4, T5> tupleFlat(t1: Tuple4<T1, T2, T3, T4>, val5: T5) = Tuple5(t1.val1, t1.val2, t1.val3, t1.val4, val5)
+fun <T1, T2, T3, T4, T5> tupleFlat(t1: Tuple4<T1, T2, T3, T4>, val5: T5) =
+  Tuple5(t1.val1, t1.val2, t1.val3, t1.val4, val5)
