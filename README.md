@@ -44,7 +44,7 @@ fun main(args: Array<String>) {
 
 ```
 
-More examples can be in the test, like:
+More examples can be found in the tests, like:
 
 * [Routing and reverse routing](src/test/kotlin/com/natpryce/krouton/example/HttpRoutingExample.kt)
 * [The calculator example](src/test/kotlin/com/natpryce/krouton/example/CalculatorExample.kt)
@@ -52,25 +52,25 @@ More examples can be in the test, like:
 
 ## Principles
 
-Type safe routing and reverse routing.
+* Type safe routing and reverse routing.
 
-No reflection, annotations or classpath scanning.
+* No reflection, annotations or classpath scanning.
 
-Explicit, type-checked flow of data and control, instead of "spooky action at a distance" via reflection, annotations,
+* Explicit, type-checked flow of data and control, instead of "spooky action at a distance" via reflection, annotations,
 classpath scanning, passing data in context maps or synthetic HTTP headers, or control flow via exceptions.
 
-Separate code that routes and handles requests from definitions of URLs
+* Separate code that routes and handles requests from definitions of URLs.
 
-* URLs defined by constants (immutable objects)
-* Routing policy defined by operations on those constants
-* Routing done by functions/closures/objects that connect Krouton's routing policy API to a web server library.
+  * URLs defined by constants (immutable objects)
+  * Routing policy defined by operations on those constants
+  * Routing done by functions/closures/objects that connect Krouton's routing policy API to a web server library.
 
-Compositional: routes are composed from primitive parts and composition operators. User-defined routes can be used in
+* Compositional: routes are composed from primitive parts and composition operators. User-defined routes can be used in
 exactly the same way as the predefined primitives.
 
-Mandatory aspects of a resource locator go in the path
+* Mandatory aspects of a resource locator go in the path.
 
-Query parameters are optional and are interpreted by the resource.
+* Query parameters are optional and are interpreted by the resource.
 
 
 ## Routing policy operations
@@ -78,18 +78,18 @@ Query parameters are optional and are interpreted by the resource.
 * Parsing with `.parse(...)`: `UrlScheme<T>.parse(String) -> T?`
 * Reporting with `.monitoredPath(...)`: `UrlScheme<T>.monitoredPath(T)-> String`
 * Reverse routing with...
-   * `.path(...)`: `UrlScheme<T>.path(T) -> String`
-   * `.fullUrl(...)`: `UrlScheme<T>.path(baseUrl: String, T) -> String`
-   * `.fullUrl(...)`: `UrlScheme<T>.path(request: Request, T) -> String`
+  * `.path(...)`: `UrlScheme<T>.path(T) -> String`
+  * `.fullUrl(...)`: `UrlScheme<T>.fullUrl(baseUrl: String, T) -> String`
+  * `.fullUrl(...)`: `UrlScheme<T>.fullUrl(request: Request, T) -> String`
 
 
 ## Route composition
 
 * Append:
-    * `UrlScheme<T> / UrlScheme<U> -> UrlScheme<Tuple2<T,U>>`
-    * `/` operator supports appending paths for scalars and tuples, forming paths for tuples with up to five elements
-    * `UrlScheme<Unit> / UrlScheme<T> -> UrlScheme<T>`
-    * `UrlScheme<T> / UrlScheme<Unit> -> UrlScheme<T>`
+  * `UrlScheme<T> / UrlScheme<U> -> UrlScheme<Tuple2<T,U>>`
+  * `/` operator supports appending paths for scalars and tuples, forming paths for tuples with up to five elements
+  * `UrlScheme<Unit> / UrlScheme<T> -> UrlScheme<T>`
+  * `UrlScheme<T> / UrlScheme<Unit> -> UrlScheme<T>`
 * Append fixed path element: `UrlScheme<T> / String -> UrlScheme<T>`
 * Restrict: `UrlScheme<T> where ((T)->Boolean) -> UrlScheme<T>`
 * Project: `UrlScheme<T> asA Projection<T,U> -> UrlScheme<U>`
@@ -97,8 +97,8 @@ Query parameters are optional and are interpreted by the resource.
 
 ## What's with the version number?
 
-The version number is {mental}.{major}.{minor}.{patch}. The last three digits are treated as a
+The version number is `{mental}.{major}.{minor}.{patch}`. The last three digits are treated as a
 [semantic version number](https://semver.org). The first digit is incremented if there is a significant
 change in the mental model underpinning the library. A major version of zero always signifies a pre-release version,
 irrespective of the value of the first digit. The API of pre-release versions may go through significant changes in
-response to user feedback before the release of version x.1.0.0.
+response to user feedback before the release of version `x.1.0.0`.
